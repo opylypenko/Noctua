@@ -78,14 +78,18 @@
     const installBtn = document.getElementById('installBtn');
     document.getElementById('buildId').textContent = BUILD_ID;
 
+    function fwUrl(fileName) {
+      return new URL(`fw/${fileName}`, window.location.href).href;
+    }
+
     const builds = {
       esp01: {
-        en: { chipFamily: 'ESP8266', path: `./fw/noctua_esp01_en_${BUILD_ID}.bin` },
-        ua: { chipFamily: 'ESP8266', path: `./fw/noctua_esp01_ua_${BUILD_ID}.bin` },
+        en: { chipFamily: 'ESP8266', file: `noctua_esp01_en_${BUILD_ID}.bin` },
+        ua: { chipFamily: 'ESP8266', file: `noctua_esp01_ua_${BUILD_ID}.bin` },
       },
       d1mini: {
-        en: { chipFamily: 'ESP8266', path: `./fw/noctua_d1mini_en_${BUILD_ID}.bin` },
-        ua: { chipFamily: 'ESP8266', path: `./fw/noctua_d1mini_ua_${BUILD_ID}.bin` },
+        en: { chipFamily: 'ESP8266', file: `noctua_d1mini_en_${BUILD_ID}.bin` },
+        ua: { chipFamily: 'ESP8266', file: `noctua_d1mini_ua_${BUILD_ID}.bin` },
       },
     };
 
@@ -112,7 +116,7 @@
         builds: [
           {
             chipFamily: b.chipFamily,
-            parts: [{ path: b.path, offset: 0 }],
+            parts: [{ path: fwUrl(b.file), offset: 0 }],
           },
         ],
       };
