@@ -2,6 +2,8 @@
 
 Firmware for ESP8266 boards with a built-in web portal.
 
+License: GPL-3.0-or-later (see LICENSE).
+
 - Language: English / Ukrainian (compile-time selection)
 - Boards: ESP-01 (1MB) and Wemos D1 mini
 - Build system: PlatformIO
