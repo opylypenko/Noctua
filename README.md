@@ -1,35 +1,35 @@
 # Noctua
 
-Firmware for ESP8266 boards with a built-in web portal.
+Прошивка для плат ESP8266 з вбудованим веб‑порталом.
 
-License: GPL-3.0-or-later (see LICENSE).
+Ліцензія: GPL-3.0-or-later (див. LICENSE).
 
-- Language: English / Ukrainian (compile-time selection)
-- Boards: ESP-01 (1MB) and Wemos D1 mini
-- Build system: PlatformIO
+- Мови: англійська / українська (вибір під час компіляції)
+- Плати: ESP-01 (1MB) та Wemos D1 mini
+- Система збірки: PlatformIO
 
-## Web installer
+## Веб‑інсталятор
 
-A simple WebSerial installer is available via GitHub Pages:
+Простий WebSerial інсталятор (GitHub Pages):
 
 - https://opylypenko.github.io/Noctua/
 
-It works in Chrome/Edge over HTTPS.
+Працює в Chrome/Edge через HTTPS.
 
-## Build
+## Збірка
 
 ```bash
 pio run -e noctua -e noctua_ua -e d1_mini -e d1_mini_ua
 ```
 
-## Upload
+## Прошивка через USB
 
-Example (adjust the port):
+Приклад (заміни порт під себе):
 
 ```bash
 pio run -t upload -e d1_mini --upload-port /dev/cu.usbserial-110
 ```
 
-## Українська версія
+## English version
 
-See [README.uk.md](README.uk.md).
+See [README.en.md](README.en.md).
