@@ -223,6 +223,7 @@ static String htmlEscape(const String& s) {
     else if (c == '<') o += F("&lt;");
     else if (c == '>') o += F("&gt;");
     else if (c == '\"') o += F("&quot;");
+    else if (c == '\'') o += F("&#39;");
     else o += c;
   }
   return o;
@@ -755,7 +756,7 @@ static void handleLoginGet() {
   body += NOCTUA_I18N_LABEL_PASSWORD;
   body += F("</label>");
   body += F("<input type='password' name='pass' placeholder='");
-  body += NOCTUA_I18N_PLACEHOLDER_ADMIN_PASSWORD;
+  body += htmlEscape(String(NOCTUA_I18N_PLACEHOLDER_ADMIN_PASSWORD));
   body += F("' autofocus>");
   body += F("<button class='btn' type='submit'>");
   body += NOCTUA_I18N_BTN_LOGIN_SUBMIT;
@@ -817,7 +818,7 @@ static void handleLoginPost() {
   body += NOCTUA_I18N_LABEL_PASSWORD;
   body += F("</label>");
   body += F("<input type='password' name='pass' placeholder='");
-  body += NOCTUA_I18N_PLACEHOLDER_ADMIN_PASSWORD;
+  body += htmlEscape(String(NOCTUA_I18N_PLACEHOLDER_ADMIN_PASSWORD));
   body += F("' autofocus>");
   body += F("<button class='btn' type='submit'>");
   body += NOCTUA_I18N_BTN_LOGIN_SUBMIT;
@@ -860,7 +861,7 @@ static void handleAdmin() {
   body += NOCTUA_I18N_LABEL_WIFI_SSID;
   body += F("</label>");
   body += F("<input name='ssid' placeholder='");
-  body += NOCTUA_I18N_PLACEHOLDER_SSID;
+  body += htmlEscape(String(NOCTUA_I18N_PLACEHOLDER_SSID));
   body += F("' value='");
   body += htmlEscape(String(gCfg.wifiSsid));
   body += F("'>");
@@ -871,7 +872,7 @@ static void handleAdmin() {
   body += NOCTUA_I18N_LABEL_WIFI_PASSWORD;
   body += F("</label>");
   body += F("<input name='pass' type='password' placeholder='");
-  body += NOCTUA_I18N_LABEL_PASSWORD;
+  body += htmlEscape(String(NOCTUA_I18N_LABEL_PASSWORD));
   body += F("' value='");
   body += htmlEscape(String(gCfg.wifiPass));
   body += F("'>");
@@ -882,7 +883,7 @@ static void handleAdmin() {
   body += NOCTUA_I18N_LABEL_ADMIN_PASSWORD;
   body += F("</label>");
   body += F("<input name='admin' type='password' placeholder='");
-  body += NOCTUA_I18N_PLACEHOLDER_OPTIONAL;
+  body += htmlEscape(String(NOCTUA_I18N_PLACEHOLDER_OPTIONAL));
   body += F("' value='");
   body += htmlEscape(String(gCfg.adminPass));
   body += F("'>");
@@ -893,7 +894,7 @@ static void handleAdmin() {
   body += NOCTUA_I18N_LABEL_CONFIRM_ADMIN_PASSWORD;
   body += F("</label>");
   body += F("<input name='admin2' type='password' placeholder='");
-  body += NOCTUA_I18N_PLACEHOLDER_REPEAT_PASSWORD;
+  body += htmlEscape(String(NOCTUA_I18N_PLACEHOLDER_REPEAT_PASSWORD));
   body += F("' value='");
   body += htmlEscape(String(gCfg.adminPass));
   body += F("'>");
@@ -904,7 +905,7 @@ static void handleAdmin() {
   body += NOCTUA_I18N_LABEL_CHANNEL_KEY;
   body += F("</label>");
   body += F("<input name='channel' placeholder='");
-  body += NOCTUA_I18N_LABEL_CHANNEL_KEY;
+  body += htmlEscape(String(NOCTUA_I18N_LABEL_CHANNEL_KEY));
   body += F("' value='");
   body += htmlEscape(String(gCfg.channelKey));
   body += F("'>");
