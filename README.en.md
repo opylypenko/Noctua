@@ -1,6 +1,6 @@
 # Noctua
 
-Firmware for ESP8266 boards with a built-in web portal.
+ESP8266 firmware for the [Svitlobot](https://svitlobot.in.ua/) service.
 
 License: GPL-3.0-or-later (see LICENSE).
 

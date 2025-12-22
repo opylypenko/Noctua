@@ -1,6 +1,6 @@
 # Noctua
 
-Прошивка для плат ESP8266 з вбудованим веб‑порталом.
+Прошивка для ESP8266 під сервіс [Svitlobot](https://svitlobot.in.ua/).
 
 Ліцензія: GPL-3.0-or-later (див. LICENSE).
 
