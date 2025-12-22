@@ -72,7 +72,7 @@
 #define NOCTUA_I18N_LABEL_WIFI_PASSWORD F("Пароль Wi-Fi")
 
 #define NOCTUA_I18N_LABEL_ADMIN_PASSWORD F("Пароль адміністратора")
-#define NOCTUA_I18N_PLACEHOLDER_OPTIONAL F("(необов'язково)")
+#define NOCTUA_I18N_PLACEHOLDER_OPTIONAL F("(опційно)")
 
 #define NOCTUA_I18N_LABEL_CONFIRM_ADMIN_PASSWORD F("Підтвердіть пароль адміністратора")
 #define NOCTUA_I18N_PLACEHOLDER_REPEAT_PASSWORD F("(повторіть пароль)")
