@@ -263,9 +263,12 @@ static String css() {
     "input[type=checkbox]{width:auto;padding:0;border:0;border-radius:0;}"
     "input:focus{border-color:rgba(0,0,0,.25);}"
     ".btn{margin-top:10px;display:inline-block;border:0;border-radius:12px;"
-    "padding:10px 12px;font-size:14px;cursor:pointer;background:#111;color:#fff;}"
+    "padding:10px 12px;font-size:14px;cursor:pointer;background:#111;color:#fff;box-sizing:border-box;max-width:100%;}"
     ".btn2{background:#fff;color:#111;border:1px solid rgba(0,0,0,.12);}"
     ".btnDanger{background:#fff;color:#b00020;border:1px solid #b00020;}"
+    ".actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:8px;flex-wrap:wrap;}"
+    ".actionsGroup{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}"
+    ".btnRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}"
     ".pill{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;"
     "background:#f2f2f7;color:#111;border:1px solid rgba(0,0,0,.06);}"
     ".muted{color:#666;font-size:12px;}"
@@ -278,6 +281,17 @@ static String css() {
     ".spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;margin-right:8px;vertical-align:middle;animation:spin 1s linear infinite;}"
     ".overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:9999;}"
     ".overlay .spinner{width:40px;height:40px;border-width:4px;border-color:rgba(255,255,255,0.25);border-top-color:#fff;}"
+    "@media (max-width:520px){"
+      ".actions{flex-direction:column;align-items:stretch;}"
+      ".actionsGroup{flex-direction:column;align-items:stretch;}"
+      ".actionsGroup>a.btn{display:block;width:100%;text-align:center;}"
+      ".actionsGroup>button.btn{width:100%;}"
+      ".actionsGroup>form{display:block;width:100%;margin:0;}"
+      ".actionsGroup>form>button{width:100%;}"
+      ".btnRow{flex-direction:column;align-items:stretch;}"
+      ".btnRow>a.btn{display:block;width:100%;text-align:center;}"
+      ".btnRow>button.btn{width:100%;}"
+    "}"
     "@keyframes spin{to{transform:rotate(360deg)}}"
   );
 }
@@ -929,8 +943,8 @@ static void handleAdmin() {
   body += F("</form>");
 
   // Action row: buttons live together, forms stay separate (no nesting)
-  body += F("<div style='display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:8px;'>");
-  body += F("<div>");
+  body += F("<div class='actions'>");
+  body += F("<div class='actionsGroup'>");
   body += F("<button class='btn' type='submit' form='saveForm'>");
   body += NOCTUA_I18N_BTN_SAVE;
   body += F("</button> ");
@@ -939,11 +953,11 @@ static void handleAdmin() {
   body += F("</a>");
   body += F("</div>");
 
-  body += F("<div style='display:flex;gap:8px;align-items:center;'>");
+  body += F("<div class='actionsGroup'>");
   body += F("<a class='btn btn2' href='/update' style='text-decoration:none;'>");
   body += NOCTUA_I18N_BTN_FIRMWARE_UPDATE;
   body += F("</a>");
-  body += F("<form method='GET' action='/reset-config' style='display:inline;margin:0;'>");
+  body += F("<form method='GET' action='/reset-config'>");
   body += F("<button class='btn btnDanger' type='submit'>");
   body += NOCTUA_I18N_BTN_CLEAR_FLASH;
   body += F("</button>");
@@ -1001,7 +1015,7 @@ static void handleUpdateGet() {
   body += F("</p>");
   body += F("<form method='POST' action='/update' enctype='multipart/form-data' style='margin-top:10px;'>");
   body += F("<input type='file' name='firmware' accept='.bin,application/octet-stream' required>");
-  body += F("<div style='display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;'>");
+  body += F("<div class='btnRow'>");
   body += F("<button class='btn' type='submit'>");
   body += NOCTUA_I18N_BTN_UPDATE;
   body += F("</button>");
