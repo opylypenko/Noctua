@@ -29,9 +29,9 @@
 3. Натисни **Configure** і заповни параметри (SSID/пароль Wi‑Fi, `Channel key`, за бажанням admin пароль).
 4. Натисни **Save** — пристрій збереже налаштування і переключиться в режим STA.
 
-![Головна сторінка](docs/screenshots/Screenshot-Home.png)
+![Головна сторінка](docs/screenshots/Screenshot-Home-ua.png)
 
-![Сторінка налаштувань](docs/screenshots/Screenshot-Configure.png)
+![Сторінка налаштувань](docs/screenshots/Screenshot-Configure-ua.png)
 
 ## Оновлення прошивки (OTA)
 

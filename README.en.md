@@ -29,9 +29,9 @@ Steps:
 3. Click **Configure** and fill in settings (Wi‑Fi SSID/password, `Channel key`, optional admin password).
 4. Click **Save** — the device saves config and switches to STA mode.
 
-![Home page](docs/screenshots/Screenshot-Home.png)
+![Home page](docs/screenshots/Screenshot-Home-en.png)
 
-![Configuration page](docs/screenshots/Screenshot-Configure.png)
+![Configuration page](docs/screenshots/Screenshot-Configure-en.png)
 
 ## Firmware update (OTA)
 
