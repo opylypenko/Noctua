@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Noctua · Web installer</title>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,Arial,sans-serif; background: #f5f5f7; color:#111; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 28px 16px 40px; }
+    .card { background: #fff; border-radius: 16px; padding: 18px 16px; border: 1px solid rgba(0,0,0,.06); box-shadow: 0 10px 24px rgba(0,0,0,.06); }
+    h1 { margin: 0 0 6px; font-size: 20px; letter-spacing: -.2px; }
+    p { margin: 6px 0 12px; color: #444; line-height: 1.35; }
+    .row { display:flex; gap: 12px; flex-wrap: wrap; }
+    .field { flex: 1 1 260px; min-width: 220px; }
+    label { display:block; font-size: 12px; color:#666; margin: 10px 0 6px; }
+    select { width:100%; box-sizing:border-box; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,.14); background:#fff; }
+    .muted { font-size: 12px; color:#666; }
+    .warn { background: #fff3cd; border: 1px solid rgba(0,0,0,.06); border-left: 4px solid #ffc107; border-radius: 12px; padding: 10px 12px; margin-top: 14px; }
+    .install { margin-top: 14px; padding: 14px 12px; background:#f8f9fa; border-radius: 12px; border: 1px solid rgba(0,0,0,.06); }
+    esp-web-install-button { --esp-tools-button-color: #111; --esp-tools-button-text-color: #fff; --esp-tools-button-border-radius: 12px; }
+    .btn { appearance:none; border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 600; cursor: pointer; background:#111; color:#fff; }
+    .btn:disabled { opacity: .5; cursor: default; }
+    code { background: rgba(0,0,0,.06); padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Noctua · Web installer</h1>
+      <p class="muted">Працює в Chrome / Edge через WebSerial. Потрібен HTTPS.</p>
+
+      <div class="row">
+        <div class="field">
+          <label for="device">1) Плата</label>
+          <select id="device">
+            <option value="">— Оберіть —</option>
+            <option value="esp01">ESP-01 (ESP8266, 1MB)</option>
+            <option value="d1mini">Wemos D1 mini (ESP8266)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lang">2) Мова</label>
+          <select id="lang">
+            <option value="">— Оберіть —</option>
+            <option value="en">English</option>
+            <option value="ua">Українська</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="install" id="installBox" style="display:none;">
+        <p style="margin-top:0;"><strong>3) Прошити</strong></p>
+        <p class="muted">Підключи плату через USB та натисни кнопку. Рекомендовано якісний кабель.</p>
+
+        <esp-web-install-button id="installBtn">
+          <button slot="activate" class="btn">Прошити</button>
+          <span slot="unsupported">Браузер не підтримується. Використай Chrome або Edge.</span>
+          <span slot="not-allowed">Потрібен HTTPS (або localhost) для роботи інсталятора.</span>
+        </esp-web-install-button>
+
+        <p class="muted" style="margin-bottom:0;">Build: <code id="buildId">47d86bb</code></p>
+      </div>
+
+      <div class="warn">
+        <strong>Увага:</strong> програмне забезпечення надається «як є». Використовуй на свій ризик.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BUILD_ID = '47d86bb';
+
+    const deviceEl = document.getElementById('device');
+    const langEl = document.getElementById('lang');
+    const installBox = document.getElementById('installBox');
+    const installBtn = document.getElementById('installBtn');
+    document.getElementById('buildId').textContent = BUILD_ID;
+
+    const builds = {
+      esp01: {
+        en: { chipFamily: 'ESP8266', path: `./fw/noctua_esp01_en_${BUILD_ID}.bin` },
+        ua: { chipFamily: 'ESP8266', path: `./fw/noctua_esp01_ua_${BUILD_ID}.bin` },
+      },
+      d1mini: {
+        en: { chipFamily: 'ESP8266', path: `./fw/noctua_d1mini_en_${BUILD_ID}.bin` },
+        ua: { chipFamily: 'ESP8266', path: `./fw/noctua_d1mini_ua_${BUILD_ID}.bin` },
+      },
+    };
+
+    function updateManifest() {
+      const dev = deviceEl.value;
+      const lang = langEl.value;
+      if (!dev || !lang) {
+        installBox.style.display = 'none';
+        installBtn.manifest = null;
+        return;
+      }
+
+      const b = builds?.[dev]?.[lang];
+      if (!b) {
+        installBox.style.display = 'none';
+        installBtn.manifest = null;
+        return;
+      }
+
+      const manifest = {
+        name: `Noctua (${dev}, ${lang})`,
+        version: BUILD_ID,
+        new_install_prompt_erase: true,
+        builds: [
+          {
+            chipFamily: b.chipFamily,
+            parts: [{ path: b.path, offset: 0 }],
+          },
+        ],
+      };
+
+      const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+      installBtn.manifest = URL.createObjectURL(blob);
+      installBox.style.display = '';
+    }
+
+    deviceEl.addEventListener('change', updateManifest);
+    langEl.addEventListener('change', updateManifest);
+  </script>
+</body>
+</html>
