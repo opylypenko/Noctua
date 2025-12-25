@@ -19,6 +19,7 @@ static const char* SETUP_AP_PASS = "";
 
 static const uint32_t WIFI_BOOT_GRACE_MS = 60000;
 static const uint32_t PING_INTERVAL_MS = 90000;
+static const uint32_t FIRST_PING_DELAY_MS = 30000;
 static const uint32_t INTERNET_CHECK_INTERVAL_MS = 30000;
 
 #ifndef NOCTUA_LED_PIN
@@ -52,6 +53,14 @@ static bool gInternetOk = false;
 static bool gReconfigInProgress = false;
 static uint32_t gLastReconfigMs = 0;
 static const uint32_t RECONFIG_COOLDOWN_MS = 1500;
+
+static void startPingScheduleWithDelay(uint32_t delayMs) {
+  // Ping happens when (now - gLastPingMs) >= PING_INTERVAL_MS.
+  // By backdating gLastPingMs, we can make the *next* ping happen in delayMs.
+  const uint32_t now = millis();
+  const uint32_t backdate = (PING_INTERVAL_MS > delayMs) ? (PING_INTERVAL_MS - delayMs) : 0;
+  gLastPingMs = now - backdate;
+}
 
 static const uint32_t RTC_RESET_CFG_MAGIC = 0x4E435452;  // 'NCTR'
 
@@ -195,13 +204,13 @@ void setup() {
   }
 
   // Ping schedule starts only after Wi-Fi is connected.
-  // Avoid immediate ping on boot/reconnect to prevent bursts on frequent power cycles.
+  // Avoid immediate ping on boot to prevent bursts on frequent power cycles.
   gWasStaConnected = wifiIsConnected();
-  gLastPingMs = millis();
+  startPingScheduleWithDelay(FIRST_PING_DELAY_MS);
 
-  // Start countdown from full interval once we're connected.
+  // Start countdown from the first delay once we're connected.
   if (wifiIsConnected() && portalHasAppConfig()) {
-    portalSetNextPingInSeconds((int)(PING_INTERVAL_MS / 1000));
+    portalSetNextPingInSeconds((int)(FIRST_PING_DELAY_MS / 1000));
   } else {
     portalSetNextPingInSeconds(-1);
   }
@@ -256,7 +265,8 @@ void loop() {
   const bool staConnectedNow = wifiIsConnected();
   if (staConnectedNow && !gWasStaConnected) {
     gWasStaConnected = true;
-    gLastPingMs = millis();
+    // After reconnect, use the regular cadence (first ping after 90s).
+    startPingScheduleWithDelay(PING_INTERVAL_MS);
 
     // Force an Internet re-check after reconnect.
     portalClearInternetStatus();
