@@ -16,3 +16,6 @@
 secrets.h
 *.key
 *.pem
+
+# Local release artifacts
+release/
